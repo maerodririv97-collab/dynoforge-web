@@ -1,7 +1,8 @@
 # DynoForge · Panel web
 
 Panel de administración (solo superadmin) y página de descargas (cualquier usuario activo).
-Plan completo: `../docs/PLAN_Usuarios_Nube.md`.
+Plan completo: `docs/PLAN_Usuarios_Nube.md` en el repo de la app de escritorio (DynoForge, Bitbucket).
+El esquema de Supabase vive en `supabase/migrations/` (la app de escritorio usa `register_device` y `check_access`).
 
 | Ruta | Quién | Qué |
 |---|---|---|
@@ -12,14 +13,14 @@ Plan completo: `../docs/PLAN_Usuarios_Nube.md`.
 | `/descargas` | todos | Descarga de la versión vigente con enlace firmado de 10 min |
 
 ## Antes de desplegar (Supabase)
-1. SQL Editor → correr `../supabase/migrations/20261112010000_fase2_panel.sql`.
+1. SQL Editor → correr `supabase/migrations/20261112010000_fase2_panel.sql`.
 2. Authentication → URL Configuration:
    - **Site URL**: la URL de Vercel (ej. `https://dynoforge-panel.vercel.app`).
    - **Redirect URLs**: agregar `https://<tu-dominio>/restablecer` y `http://localhost:5180/restablecer`.
 
 ## Desplegar en Vercel
-1. New Project → importar el repo de GitHub.
-2. **Root Directory: `admin-panel`** (Framework: Vite, se detecta solo).
+1. New Project → importar `dynoforge-web` desde GitHub.
+2. Framework: Vite (se detecta solo). Root Directory: la raíz del repo.
 3. Environment Variables:
    - `VITE_SUPABASE_URL` = `https://nwjghirjgipozcvnxhak.supabase.co`
    - `VITE_SUPABASE_PUBLISHABLE_KEY` = la `sb_publishable_…`
