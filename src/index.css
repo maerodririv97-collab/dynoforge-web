@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body {
+  background: #080808;
+  background-image:
+    radial-gradient(ellipse 75% 60% at 12% -8%, rgba(0,191,255,0.07) 0%, transparent 62%),
+    radial-gradient(ellipse 70% 60% at 108% 108%, rgba(229,35,43,0.08) 0%, transparent 62%);
+  background-attachment: fixed;
+  color: #fff;
+  color-scheme: dark;
+}
