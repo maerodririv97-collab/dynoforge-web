@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { supabase, errMsg } from '../lib/supabase';
 import { Button, Card, ErrorBox, Field, Input } from '../components/ui';
 import logo from '../logo-dynoforge.png';
@@ -30,9 +32,11 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-full items-center justify-center p-4">
+    <div className="flex min-h-full flex-col items-center justify-center gap-4 p-4">
       <Card className="w-full max-w-sm p-6">
-        <img src={logo} alt="DynoForge" className="mx-auto mb-6 h-10 w-auto" />
+        <Link to="/">
+          <img src={logo} alt="DynoForge" className="mx-auto mb-6 h-10 w-auto" />
+        </Link>
         <form onSubmit={submit} className="space-y-4">
           <Field label="Correo">
             <Input type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -66,6 +70,9 @@ export default function Login() {
           </button>
         </form>
       </Card>
+      <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-light hover:text-white">
+        <ArrowLeft className="h-4 w-4" /> Volver al sitio
+      </Link>
     </div>
   );
 }

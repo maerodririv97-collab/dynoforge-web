@@ -9,20 +9,49 @@ import Workshops from './pages/Workshops';
 import Users from './pages/Users';
 import Devices from './pages/Devices';
 import Releases from './pages/Releases';
+import SiteLayout from './site/SiteLayout';
+import Home from './site/pages/Home';
+import Equipment from './site/pages/Equipment';
+import Gallery from './site/pages/Gallery';
+import Datasheets from './site/pages/Datasheets';
+import Contact from './site/pages/Contact';
+
+/** Rutas del panel antes de que existiera el sitio público (enlaces y marcadores viejos). */
+const LEGACY_PANEL = ['talleres', 'usuarios', 'equipos', 'versiones', 'descargas'];
 
 export default function App() {
-  const { session, profile, loading, blockedReason, recovering, signOut } = useAuth();
+  const { session, loading, recovering } = useAuth();
 
   if (recovering) return <ResetPassword />;
+
+  return (
+    <Routes>
+      {/* Sitio público */}
+      <Route element={<SiteLayout />}>
+        <Route index element={<Home />} />
+        <Route path="productos" element={<Equipment />} />
+        <Route path="galeria" element={<Gallery />} />
+        <Route path="fichas-tecnicas" element={<Datasheets />} />
+        <Route path="contacto" element={<Contact />} />
+      </Route>
+
+      <Route path="/login" element={loading ? <Spinner /> : session ? <Navigate to="/panel" replace /> : <Login />} />
+      <Route path="/restablecer" element={<ResetPassword />} />
+      <Route path="/panel/*" element={<Panel />} />
+
+      {LEGACY_PANEL.map((p) => (
+        <Route key={p} path={`/${p}`} element={<Navigate to={`/panel/${p}`} replace />} />
+      ))}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+function Panel() {
+  const { session, profile, loading, blockedReason, signOut } = useAuth();
+
   if (loading) return <Spinner />;
-  if (!session) {
-    return (
-      <Routes>
-        <Route path="/restablecer" element={<ResetPassword />} />
-        <Route path="*" element={<Login />} />
-      </Routes>
-    );
-  }
+  if (!session) return <Navigate to="/login" replace />;
 
   if (blockedReason || !profile) {
     return (
@@ -42,16 +71,16 @@ export default function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/descargas" element={<Downloads />} />
+        <Route path="descargas" element={<Downloads />} />
         {admin && (
           <>
-            <Route path="/talleres" element={<Workshops />} />
-            <Route path="/usuarios" element={<Users />} />
-            <Route path="/equipos" element={<Devices />} />
-            <Route path="/versiones" element={<Releases />} />
+            <Route path="talleres" element={<Workshops />} />
+            <Route path="usuarios" element={<Users />} />
+            <Route path="equipos" element={<Devices />} />
+            <Route path="versiones" element={<Releases />} />
           </>
         )}
-        <Route path="*" element={<Navigate to={admin ? '/talleres' : '/descargas'} replace />} />
+        <Route path="*" element={<Navigate to={admin ? '/panel/talleres' : '/panel/descargas'} replace />} />
       </Routes>
     </Layout>
   );

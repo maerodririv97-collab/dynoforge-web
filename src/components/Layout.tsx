@@ -1,21 +1,21 @@
 import { useState, type ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Building2, Download, LogOut, Menu, Monitor, Package, Users, X } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Building2, Download, Globe, LogOut, Menu, Monitor, Package, Users, X } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import logo from '../logo-dynoforge.png';
 
 const ADMIN_NAV = [
-  { to: '/talleres', label: 'Talleres', icon: Building2 },
-  { to: '/usuarios', label: 'Usuarios', icon: Users },
-  { to: '/equipos', label: 'Equipos', icon: Monitor },
-  { to: '/versiones', label: 'Versiones', icon: Package },
+  { to: '/panel/talleres', label: 'Talleres', icon: Building2 },
+  { to: '/panel/usuarios', label: 'Usuarios', icon: Users },
+  { to: '/panel/equipos', label: 'Equipos', icon: Monitor },
+  { to: '/panel/versiones', label: 'Versiones', icon: Package },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { profile, signOut } = useAuth();
   const [open, setOpen] = useState(false);
 
-  const nav = [...(profile?.is_superadmin ? ADMIN_NAV : []), { to: '/descargas', label: 'Descargas', icon: Download }];
+  const nav = [...(profile?.is_superadmin ? ADMIN_NAV : []), { to: '/panel/descargas', label: 'Descargas', icon: Download }];
 
   const links = (
     <nav className="flex flex-col gap-1">
@@ -43,9 +43,12 @@ export default function Layout({ children }: { children: ReactNode }) {
         {profile ? `${profile.first_name} ${profile.last_name}`.trim() || profile.email : ''}
       </p>
       <p className="truncate text-xs text-muted-light">{profile?.is_superadmin ? 'Superadministrador' : profile?.email}</p>
+      <Link to="/" className="mt-3 flex items-center gap-2 text-sm text-muted-light hover:text-white">
+        <Globe className="h-4 w-4" /> Ver sitio web
+      </Link>
       <button
         onClick={() => void signOut()}
-        className="mt-3 flex items-center gap-2 text-sm text-muted-light hover:text-white"
+        className="mt-2 flex items-center gap-2 text-sm text-muted-light hover:text-white"
       >
         <LogOut className="h-4 w-4" /> Cerrar sesión
       </button>
@@ -57,7 +60,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Escritorio */}
       <aside className="hidden w-60 shrink-0 flex-col justify-between border-r border-dark-3 bg-dark/70 p-4 md:flex">
         <div className="space-y-6">
-          <img src={logo} alt="DynoForge" className="h-8 w-auto" />
+          <Link to="/">
+            <img src={logo} alt="DynoForge" className="h-8 w-auto" />
+          </Link>
           {links}
         </div>
         {userBox}

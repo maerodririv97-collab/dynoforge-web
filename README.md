@@ -1,16 +1,34 @@
-# DynoForge · Panel web
+# DynoForge · Sitio web y panel
 
-Panel de administración (solo superadmin) y página de descargas (cualquier usuario activo).
+Sitio público de la marca + panel de administración (superadmin) y descargas (cualquier usuario activo).
 Plan completo: `docs/PLAN_Usuarios_Nube.md` en el repo de la app de escritorio (DynoForge, Bitbucket).
 El esquema de Supabase vive en `supabase/migrations/` (la app de escritorio usa `register_device` y `check_access`).
 
+## Sitio público
+| Ruta | Qué |
+|---|---|
+| `/` | Inicio: información de la empresa, líneas de equipos, software |
+| `/productos` | Líneas de dinamómetros (motos, carros, karts) |
+| `/galeria` | Galería de fotos con filtros y visor |
+| `/fichas-tecnicas` | Descarga de fichas técnicas en PDF |
+| `/contacto` | Datos de contacto y formulario que abre WhatsApp |
+| `/login` | Entrada al panel |
+
+**Todo el contenido editable está en `src/site/content.ts`**: número de WhatsApp, correo, textos de cada
+línea, lista de fotos y fichas.
+- Fotos: copiarlas a `public/img/galeria/` y agregarlas a `GALLERY`.
+- Fichas: copiar el PDF a `public/fichas/` y poner su ruta en `file` (mientras sea `null`, el botón ofrece pedirla por WhatsApp).
+
+## Panel (requiere sesión)
 | Ruta | Quién | Qué |
 |---|---|---|
-| `/talleres` | superadmin | Crear/editar/desactivar talleres, código de registro de PCs |
-| `/usuarios` | superadmin | Crear usuarios (contraseña inicial), rol, taller, activar/desactivar, cambiar contraseña, borrar |
-| `/equipos` | superadmin | PCs registradas: autorizar, bloquear, renombrar, quitar |
-| `/versiones` | superadmin | Subir instalador (bucket privado), marcar vigente |
-| `/descargas` | todos | Descarga de la versión vigente con enlace firmado de 10 min |
+| `/panel/talleres` | superadmin | Crear/editar/desactivar talleres, código de registro de PCs |
+| `/panel/usuarios` | superadmin | Crear usuarios (contraseña inicial), rol, taller, activar/desactivar, cambiar contraseña, borrar |
+| `/panel/equipos` | superadmin | PCs registradas: autorizar, bloquear, renombrar, quitar |
+| `/panel/versiones` | superadmin | Subir instalador (bucket privado), marcar vigente |
+| `/panel/descargas` | todos | Descarga de la versión vigente con enlace firmado de 10 min |
+
+Las rutas viejas (`/talleres`, `/usuarios`, …) redirigen a su equivalente en `/panel/`.
 
 ## Antes de desplegar (Supabase)
 1. SQL Editor → correr `supabase/migrations/20261112010000_fase2_panel.sql`.

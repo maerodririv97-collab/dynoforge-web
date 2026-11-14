@@ -21,7 +21,7 @@ export default function ResetPassword() {
     setBusy(false);
     if (error) return setError(errMsg(error));
     clearRecovering();
-    navigate('/', { replace: true });
+    navigate('/panel', { replace: true });
   }
 
   return (
