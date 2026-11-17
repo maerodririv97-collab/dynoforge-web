@@ -11,13 +11,17 @@
 export const COMPANY = {
   name: 'DynoForge',
   tagline: 'Performance Test System',
-  // TODO: reemplazar por los datos reales.
-  whatsapp: '573000000000', // solo dígitos, con indicativo de país (57 = Colombia)
-  whatsappDisplay: '+57 300 000 0000',
+  whatsapp: '573023418833', // solo dígitos, con indicativo de país (57 = Colombia)
+  whatsappDisplay: '+57 302 341 8833',
+  phone: '+573023418833', // para enlaces tel:
+  phoneDisplay: '+57 302 341 8833',
   email: 'contacto@dynoforge.co',
-  city: 'Colombia',
-  hours: 'Lunes a viernes, 8:00 a. m. – 6:00 p. m.',
-  instagram: '', // URL completa, vacío para ocultar
+  city: 'Itagüí, Colombia',
+  address: 'Cl. 36 #55-27, Samaria, Itagüí, Colombia',
+  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Cl. 36 #55-27, Samaria, Itagüí, Antioquia, Colombia'),
+  hours: 'Lunes a sábado, 7:00 a. m. – 6:00 p. m.',
+  instagram: 'https://www.instagram.com/dynoforge/', // URL completa, vacío para ocultar
+  instagramHandle: '@dynoforge',
   facebook: '',
 };
 
@@ -69,7 +73,7 @@ export const EQUIPMENT: EquipmentLine[] = [
       'Dinamómetro compacto para karts y motores de competencia de baja cilindrada. Permite afinar carburación, encendido y escape con datos reales en vez de sensaciones en pista.',
     image: '/img/equipos/karts.webp',
     highlights: [
-      'Alta frecuencia de adquisición para motores de altas RPM',
+      'RPM medidas pulso a pulso: 4 pulsos por vuelta con hora de hardware',
       'Curvas de potencia y torque en vivo',
       'Historial de pruebas por vehículo y por piloto',
       'Formato compacto para talleres y equipos de carreras',

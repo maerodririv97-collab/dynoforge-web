@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react';
-import { Clock, Mail, MapPin } from 'lucide-react';
+import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { Field, Input, Select, Textarea } from '../../components/ui';
 import { COMPANY, EQUIPMENT } from '../content';
+import { InstagramIcon } from '../InstagramIcon';
 import { PageHero } from '../SiteLayout';
 import { WhatsAppButton, WhatsAppIcon, whatsappUrl } from '../whatsapp';
 
@@ -26,9 +27,11 @@ export default function Contact() {
 
   const items = [
     { icon: WhatsAppIcon, label: 'WhatsApp', value: COMPANY.whatsappDisplay, href: whatsappUrl() },
+    { icon: Phone, label: 'Teléfono', value: COMPANY.phoneDisplay, href: `tel:${COMPANY.phone}` },
     { icon: Mail, label: 'Correo', value: COMPANY.email, href: `mailto:${COMPANY.email}` },
-    { icon: MapPin, label: 'Ubicación', value: COMPANY.city },
+    { icon: MapPin, label: 'Ubicación', value: COMPANY.address, href: COMPANY.mapsUrl },
     { icon: Clock, label: 'Horario', value: COMPANY.hours },
+    ...(COMPANY.instagram ? [{ icon: InstagramIcon, label: 'Instagram', value: COMPANY.instagramHandle, href: COMPANY.instagram }] : []),
   ];
 
   return (
@@ -47,7 +50,7 @@ export default function Contact() {
                 <Icon className="h-5 w-5 shrink-0 text-red-light" />
                 <div className="min-w-0">
                   <p className="text-xs uppercase tracking-wide text-muted-light">{label}</p>
-                  <p className="truncate text-sm">{value}</p>
+                  <p className="break-words text-sm">{value}</p>
                 </div>
               </>
             );

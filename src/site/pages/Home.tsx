@@ -7,13 +7,13 @@ import { WhatsAppButton } from '../whatsapp';
 
 const STATS = [
   { value: '3', label: 'líneas de banco: motos, carros y karts' },
-  { value: '250 Hz', label: 'adquisición de datos del hardware' },
+  { value: '90–100 Hz', label: 'lectura de sensores, con RPM medidas pulso a pulso' },
   { value: '3', label: 'estándares de corrección: SAE, DIN, ISO' },
   { value: '100%', label: 'software propio, desarrollado en casa' },
 ];
 
 const REASONS = [
-  { icon: Gauge, title: 'Medición confiable', text: 'Potencia y torque calculados en tiempo real a partir de la celda de carga y las RPM, con calibración por equipo.' },
+  { icon: Gauge, title: 'Medición confiable', text: 'Potencia y torque en tiempo real a partir de la celda de carga y las RPM. El rodillo da 4 pulsos por vuelta y la electrónica registra la hora exacta de cada uno, así la velocidad se mide con precisión incluso en aceleraciones rápidas.' },
   { icon: ThermometerSun, title: 'Resultados comparables', text: 'La corrección atmosférica normaliza cada corrida para comparar pruebas hechas en días y climas distintos.' },
   { icon: Wrench, title: 'Hardware + software', text: 'Un solo proveedor para el banco y el programa: sin integraciones de terceros ni licencias aparte.' },
   { icon: Users, title: 'Para todo el taller', text: 'Usuarios con roles, varios dinamómetros por taller y acceso administrado desde la nube.' },

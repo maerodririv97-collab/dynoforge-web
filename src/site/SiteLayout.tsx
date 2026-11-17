@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, LogIn, Mail, MapPin, Menu, X } from 'lucide-react';
+import { LayoutDashboard, LogIn, Mail, MapPin, Menu, Phone, X } from 'lucide-react';
 import { useAuth } from '../lib/auth';
 import { COMPANY } from './content';
+import { InstagramIcon } from './InstagramIcon';
 import { WhatsAppIcon, whatsappUrl } from './whatsapp';
 import logo from '../logo-dynoforge.png';
 
@@ -119,13 +120,27 @@ export default function SiteLayout() {
                 </a>
               </li>
               <li>
+                <a href={`tel:${COMPANY.phone}`} className="flex items-center gap-2 hover:text-white">
+                  <Phone className="h-4 w-4" /> {COMPANY.phoneDisplay}
+                </a>
+              </li>
+              <li>
                 <a href={`mailto:${COMPANY.email}`} className="flex items-center gap-2 hover:text-white">
                   <Mail className="h-4 w-4" /> {COMPANY.email}
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" /> {COMPANY.city}
+              <li>
+                <a href={COMPANY.mapsUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 hover:text-white">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {COMPANY.address}
+                </a>
               </li>
+              {COMPANY.instagram && (
+                <li>
+                  <a href={COMPANY.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white">
+                    <InstagramIcon className="h-4 w-4" /> {COMPANY.instagramHandle}
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

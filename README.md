@@ -33,8 +33,8 @@ Las rutas viejas (`/talleres`, `/usuarios`, …) redirigen a su equivalente en `
 ## Antes de desplegar (Supabase)
 1. SQL Editor → correr `supabase/migrations/20261112010000_fase2_panel.sql`.
 2. Authentication → URL Configuration:
-   - **Site URL**: la URL de Vercel (ej. `https://dynoforge-panel.vercel.app`).
-   - **Redirect URLs**: agregar `https://<tu-dominio>/restablecer` y `http://localhost:5180/restablecer`.
+   - **Site URL**: la URL de Vercel (`https://dynoforge.co`).
+   - **Redirect URLs**: agregar `https://dynoforge.co/restablecer` y `http://localhost:5180/restablecer`.
 
 ## Desplegar en Vercel
 1. New Project → importar `dynoforge-web` desde GitHub.
