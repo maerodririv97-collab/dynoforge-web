@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <p className="truncate text-sm font-medium">
         {profile ? `${profile.first_name} ${profile.last_name}`.trim() || profile.email : ''}
       </p>
-      <p className="truncate text-xs text-muted-light">{profile?.is_superadmin ? 'Superadministrador' : profile?.email}</p>
+      <p className="truncate text-xs text-muted-light">{profile?.is_superadmin ? 'Administrador' : profile?.email}</p>
       <Link to="/" className="mt-3 flex items-center gap-2 text-sm text-muted-light hover:text-white">
         <Globe className="h-4 w-4" /> Ver sitio web
       </Link>

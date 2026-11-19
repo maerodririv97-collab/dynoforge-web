@@ -56,7 +56,7 @@ export interface Release {
   is_current: boolean;
 }
 
-export const ROLE_LABEL: Record<Role, string> = { admin: 'Administrador', mechanic: 'Mecánico' };
+export const ROLE_LABEL: Record<Role, string> = { admin: 'Administrador', mechanic: 'Técnico' };
 export const DEVICE_STATUS_LABEL: Record<DeviceStatus, string> = {
   pending: 'Pendiente',
   authorized: 'Autorizado',

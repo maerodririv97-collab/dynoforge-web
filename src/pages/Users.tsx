@@ -82,7 +82,7 @@ export default function Users() {
               <td className="px-4 py-3 text-muted-light">{u.email ?? '—'}</td>
               <td className="px-4 py-3">{u.workshop_id ? wsName.get(u.workshop_id) ?? '—' : '—'}</td>
               <td className="px-4 py-3">
-                {u.is_superadmin ? <Badge tone="blue">Superadmin</Badge> : <Badge>{ROLE_LABEL[u.role]}</Badge>}
+                {u.is_superadmin ? <Badge tone="blue">{ROLE_LABEL.admin}</Badge> : <Badge>{ROLE_LABEL[u.role]}</Badge>}
               </td>
               <td className="px-4 py-3">
                 {u.is_active ? <Badge tone="green">Activo</Badge> : <Badge tone="red">Inactivo</Badge>}
@@ -142,7 +142,8 @@ function UserModal({
     setError('');
     if (!firstName.trim()) return setError('El nombre es obligatorio');
     if (!email.trim()) return setError('El correo es obligatorio');
-    if (!user?.is_superadmin && !workshopId) return setError('Elige un taller');
+    const isAdmin = role === 'admin';
+    if (!isAdmin && !workshopId) return setError('Elige un taller');
     setBusy(true);
     try {
       if (!isEdit) {
@@ -153,7 +154,7 @@ function UserModal({
           last_name: lastName.trim(),
           phone: phone.trim() || null,
           role,
-          workshop_id: workshopId,
+          workshop_id: isAdmin ? null : workshopId,
         });
         setCreatedPassword(password);
       } else {
@@ -166,7 +167,7 @@ function UserModal({
             first_name: firstName.trim(),
             last_name: lastName.trim(),
             phone: phone.trim() || null,
-            ...(user.is_superadmin ? {} : { role, workshop_id: workshopId, is_active: active }),
+            ...(user.is_superadmin ? {} : { role, workshop_id: isAdmin ? null : workshopId, is_active: active }),
           })
           .eq('id', user.id);
         if (error) throw error;
@@ -234,6 +235,13 @@ function UserModal({
       </Field>
       {!user?.is_superadmin && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Field label="Rol" hint={role === 'admin' ? 'Dueño de DynoForge: acceso total, sin taller.' : undefined}>
+            <Select value={role} onChange={(e) => setRole(e.target.value as Role)}>
+              <option value="mechanic">{ROLE_LABEL.mechanic}</option>
+              <option value="admin">{ROLE_LABEL.admin}</option>
+            </Select>
+          </Field>
+          {role !== 'admin' && (
           <Field label="Taller">
             <Select value={workshopId} onChange={(e) => setWorkshopId(e.target.value)}>
               {workshops.map((w) => (
@@ -244,12 +252,7 @@ function UserModal({
               ))}
             </Select>
           </Field>
-          <Field label="Rol">
-            <Select value={role} onChange={(e) => setRole(e.target.value as Role)}>
-              <option value="admin">{ROLE_LABEL.admin}</option>
-              <option value="mechanic">{ROLE_LABEL.mechanic}</option>
-            </Select>
-          </Field>
+          )}
         </div>
       )}
       {isEdit && !user.is_superadmin && (

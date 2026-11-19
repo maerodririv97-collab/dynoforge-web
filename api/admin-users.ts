@@ -22,7 +22,7 @@ interface CreateBody {
   last_name: string;
   phone?: string | null;
   role: Role;
-  workshop_id: string;
+  workshop_id: string | null;
 }
 
 interface UpdateAuthBody {
@@ -98,7 +98,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           return res.status(400).json({ error: 'La contraseña debe tener entre 8 y 72 caracteres' });
         if (body.role !== 'admin' && body.role !== 'mechanic')
           return res.status(400).json({ error: 'Rol inválido' });
-        if (!UUID_RE.test(String(body.workshop_id)))
+        const isAdmin = body.role === 'admin'; // dueño de DynoForge: sin taller
+        if (!isAdmin && !UUID_RE.test(String(body.workshop_id)))
           return res.status(400).json({ error: 'Taller inválido' });
 
         const { data: created, error: authErr } = await admin.auth.admin.createUser({
@@ -115,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const { error: profErr } = await admin.from('profiles').insert({
           id: created.user.id,
           email,
-          workshop_id: body.workshop_id,
+          workshop_id: isAdmin ? null : body.workshop_id,
           first_name: String(body.first_name ?? '').trim(),
           last_name: String(body.last_name ?? '').trim(),
           phone: body.phone ? String(body.phone).trim() : null,

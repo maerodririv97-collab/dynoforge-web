@@ -23,7 +23,7 @@ export const adminUsers = {
     last_name: string;
     phone: string | null;
     role: Role;
-    workshop_id: string;
+    workshop_id: string | null;
   }) => call<{ id: string }>({ action: 'create', ...u }),
 
   updateAuth: (user_id: string, changes: { email?: string; password?: string }) =>

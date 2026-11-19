@@ -1,6 +1,6 @@
 # DynoForge · Sitio web y panel
 
-Sitio público de la marca + panel de administración (superadmin) y descargas (cualquier usuario activo).
+Sitio público de la marca + panel de administración (superadmin y rol Administrador) y descargas (cualquier usuario activo).
 Plan completo: `docs/PLAN_Usuarios_Nube.md` en el repo de la app de escritorio (DynoForge, Bitbucket).
 El esquema de Supabase vive en `supabase/migrations/` (la app de escritorio usa `register_device` y `check_access`).
 
@@ -31,7 +31,7 @@ línea, lista de fotos y fichas.
 Las rutas viejas (`/talleres`, `/usuarios`, …) redirigen a su equivalente en `/panel/`.
 
 ## Antes de desplegar (Supabase)
-1. SQL Editor → correr `supabase/migrations/20261112010000_fase2_panel.sql`.
+1. SQL Editor → correr `supabase/migrations/20261112010000_fase2_panel.sql` y luego `supabase/migrations/20261119000000_rol_admin_permisos_totales.sql`.
 2. Authentication → URL Configuration:
    - **Site URL**: la URL de Vercel (`https://www.dynoforge.co`).
    - **Redirect URLs**: agregar `https://www.dynoforge.co/restablecer` (y la versión sin `www`) y `http://localhost:5180/restablecer`.
