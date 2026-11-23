@@ -7,6 +7,7 @@ import { Badge, Button, ErrorBox, Field, Input, Modal, PageHeader, Select, Spinn
 
 export default function Users() {
   const { profile: me } = useAuth();
+  const isAdmin = !!me?.is_superadmin;
   const [users, setUsers] = useState<Profile[]>([]);
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [filter, setFilter] = useState('');
@@ -51,17 +52,23 @@ export default function Users() {
     <div>
       <PageHeader
         title="Usuarios"
-        subtitle="Los usuarios entran a la app de escritorio con su correo y contraseña."
+        subtitle={
+          isAdmin
+            ? 'Los usuarios entran a la app de escritorio con su correo y contraseña.'
+            : 'Técnicos de tu taller. Entran a la app de escritorio con su correo y contraseña.'
+        }
         actions={
           <>
-            <Select value={filter} onChange={(e) => setFilter(e.target.value)} className="!w-auto">
-              <option value="">Todos los talleres</option>
-              {workshops.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {w.name}
-                </option>
-              ))}
-            </Select>
+            {isAdmin && (
+              <Select value={filter} onChange={(e) => setFilter(e.target.value)} className="!w-auto">
+                <option value="">Todos los talleres</option>
+                {workshops.map((w) => (
+                  <option key={w.id} value={w.id}>
+                    {w.name}
+                  </option>
+                ))}
+              </Select>
+            )}
             <Button onClick={() => setModal({ kind: 'create' })} disabled={workshops.length === 0} title={workshops.length === 0 ? 'Primero crea un taller' : ''}>
               <Plus className="h-4 w-4" /> Nuevo usuario
             </Button>
@@ -88,16 +95,20 @@ export default function Users() {
                 {u.is_active ? <Badge tone="green">Activo</Badge> : <Badge tone="red">Inactivo</Badge>}
               </td>
               <td className="whitespace-nowrap px-4 py-3 text-right">
-                <Button variant="ghost" className="!px-2" title="Editar" onClick={() => setModal({ kind: 'edit', user: u })}>
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" className="!px-2" title="Cambiar contraseña" onClick={() => setModal({ kind: 'password', user: u })}>
-                  <KeyRound className="h-4 w-4" />
-                </Button>
-                {u.id !== me?.id && (
-                  <Button variant="ghost" className="!px-2 hover:!text-red-light" title="Borrar" onClick={() => void remove(u)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                {isAdmin && (
+                  <>
+                    <Button variant="ghost" className="!px-2" title="Editar" onClick={() => setModal({ kind: 'edit', user: u })}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" className="!px-2" title="Cambiar contraseña" onClick={() => setModal({ kind: 'password', user: u })}>
+                      <KeyRound className="h-4 w-4" />
+                    </Button>
+                    {u.id !== me?.id && (
+                      <Button variant="ghost" className="!px-2 hover:!text-red-light" title="Borrar" onClick={() => void remove(u)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </>
                 )}
               </td>
             </tr>
@@ -105,8 +116,10 @@ export default function Users() {
         </Table>
       )}
 
-      {modal?.kind === 'create' && <UserModal workshops={workshops} defaultWorkshop={filter} onClose={close} onSaved={saved} />}
-      {modal?.kind === 'edit' && <UserModal workshops={workshops} user={modal.user} onClose={close} onSaved={saved} />}
+      {modal?.kind === 'create' && (
+        <UserModal workshops={workshops} defaultWorkshop={isAdmin ? filter : me?.workshop_id ?? ''} canChooseRole={isAdmin} onClose={close} onSaved={saved} />
+      )}
+      {modal?.kind === 'edit' && <UserModal workshops={workshops} user={modal.user} canChooseRole onClose={close} onSaved={saved} />}
       {modal?.kind === 'password' && <PasswordModal user={modal.user} onClose={close} />}
     </div>
   );
@@ -116,12 +129,15 @@ function UserModal({
   workshops,
   user,
   defaultWorkshop,
+  canChooseRole,
   onClose,
   onSaved,
 }: {
   workshops: Workshop[];
   user?: Profile;
   defaultWorkshop?: string;
+  /** false para técnicos: solo crean técnicos de su propio taller. */
+  canChooseRole: boolean;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -233,7 +249,12 @@ function UserModal({
       <Field label="Teléfono">
         <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
       </Field>
-      {!user?.is_superadmin && (
+      {!canChooseRole && (
+        <p className="text-sm text-muted-light">
+          Se creará como {ROLE_LABEL.mechanic} de {workshops.find((w) => w.id === workshopId)?.name ?? 'tu taller'}.
+        </p>
+      )}
+      {canChooseRole && !user?.is_superadmin && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Rol" hint={role === 'admin' ? 'Dueño de DynoForge: acceso total, sin taller.' : undefined}>
             <Select value={role} onChange={(e) => setRole(e.target.value as Role)}>

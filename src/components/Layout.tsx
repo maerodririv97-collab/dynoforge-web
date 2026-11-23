@@ -15,7 +15,10 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { profile, signOut } = useAuth();
   const [open, setOpen] = useState(false);
 
-  const nav = [...(profile?.is_superadmin ? ADMIN_NAV : []), { to: '/panel/descargas', label: 'Descargas', icon: Download }];
+  const nav = [
+    ...(profile?.is_superadmin ? ADMIN_NAV : [{ to: '/panel/usuarios', label: 'Usuarios', icon: Users }]),
+    { to: '/panel/descargas', label: 'Descargas', icon: Download },
+  ];
 
   const links = (
     <nav className="flex flex-col gap-1">

@@ -72,10 +72,11 @@ function Panel() {
     <Layout>
       <Routes>
         <Route path="descargas" element={<Downloads />} />
+        {/* Técnicos: ven y crean técnicos de su taller (la página se adapta al rol). */}
+        <Route path="usuarios" element={<Users />} />
         {admin && (
           <>
             <Route path="talleres" element={<Workshops />} />
-            <Route path="usuarios" element={<Users />} />
             <Route path="equipos" element={<Devices />} />
             <Route path="versiones" element={<Releases />} />
           </>
